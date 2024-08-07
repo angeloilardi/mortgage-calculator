@@ -20,7 +20,13 @@ export default function Home() {
     selected: string;
   };
 
-  const [result, setResult] = useState<null|number>(null)
+  const [monthlyRepayment, setMonthlyRepayment] = useState<null | number>(null);
+
+  const [interestRepayment, setInterestRepayment] = useState<null | number>(
+    null
+  );
+
+  const [totalRepayment, setTotalRepayment] = useState<null | number>(null);
 
   let schema = yup.object().shape({
     amount: yup.number().required("This field is required"),
@@ -30,24 +36,12 @@ export default function Home() {
   });
 
 
-  const options = [
-    {
-      label: "Repayment",
-      name: "selected",
-    },
-    {
-      label: "Interest Only",
-      name: "selected",
-    },
-  ];
   const initialValues: FormValues = {
     amount: '',
     years: '',
     rate: '',
     selected: "",
   };
-
-
 
   return (
     <main className="h-screen w-full">
@@ -61,13 +55,17 @@ export default function Home() {
           const rate = Number(values.rate);
           const n = years * 12;
           const i = rate / 100 / 12;
-          setResult(
+          setMonthlyRepayment(
             +(
               (amount * i * Math.pow(1 + i, n)) /
               (Math.pow(1 + i, n) - 1)
             ).toFixed(2)
           );
+          setInterestRepayment(amount * (rate / 100) * years);
+          // setTotalRepayment(interestRepayment + amount);
         }}
+      
+
       >
         <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full bg-white">
           <h1 className="text-slate-900 text-left font-[700] text-xl">
@@ -122,7 +120,7 @@ export default function Home() {
           </button>
         </Form>
       </Formik>
-      <ResultsCompleted result={result} />
+      <ResultsCompleted monthlyRepayment={monthlyRepayment} totalRepayment={totalRepayment}/>
     </main>
   );
 }
