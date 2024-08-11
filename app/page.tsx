@@ -54,7 +54,7 @@ const [amount, setAmount] = useState<number | null>(0);
     <main className="h-screen w-full">
       <Formik
         initialValues={initialValues}
-        // validationSchema={schema}
+        validationSchema={schema}
         onSubmit={(values) => {
           console.log(values);
           const amount = Number(values.amount.replace(/[^0-9\.-]+/g, ""));
@@ -136,7 +136,10 @@ const [amount, setAmount] = useState<number | null>(0);
           >
             <OptionSelect label="Repayment" />
             <OptionSelect label="Interest Only" />
-            <ErrorMessage name="selected"></ErrorMessage>
+            <ErrorMessage
+              name="selected"
+              render={(msg) => <div className="text-red text-sm">{msg}</div>}
+            ></ErrorMessage>
           </div>
           {/* <OptionSelect legend="Mortgage Type" options={options}name="selected"></OptionSelect> */}
           <button
