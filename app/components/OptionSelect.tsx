@@ -2,7 +2,7 @@ import { ErrorMessage, Field } from "formik";
 
 export default function OptionSelect({label}: {label:string}) {
   return (
-    <label className="w-full h-[50px] border border-slate-500 rounded-md flex items-center has-[:checked]:border-lime has-[:checked]:bg-lime/25 group text-slate-900 font-bold">
+    <label className="w-full h-10 border border-slate-500 rounded-md flex items-center has-[:checked]:border-lime has-[:checked]:bg-lime/25 group text-slate-900 font-bold hover:border-lime">
       <Field
         type="radio"
         name="selected"

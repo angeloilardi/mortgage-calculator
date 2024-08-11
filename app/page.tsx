@@ -51,7 +51,7 @@ const [amount, setAmount] = useState<number | null>(0);
   };
 
   return (
-    <main className="h-screen w-full">
+    <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white overflow-hidden">
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
@@ -70,9 +70,6 @@ const [amount, setAmount] = useState<number | null>(0);
               (Math.pow(1 + i, n) - 1)
             ).toFixed(2)
           );
-          // function calculateTotalRepayment() {
-          // setTotalRepayment(interestRepayment + amount);
-          // };
           function calculatInterestRepayment(
             amount: number,
             rate: number,
@@ -90,25 +87,22 @@ const [amount, setAmount] = useState<number | null>(0);
           );
         }}
       >
-        <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full bg-white">
-          <h1 className="text-slate-900 text-left font-[700] text-xl">
-            Mortgage Calculator
-          </h1>
-          <button className="underline text-slate-700" type="reset">
-            Clear all
-          </button>
-          {/* <CurrencyInput
-  
-            name="amount"
-            label="Mortgage Amount"
-            innerInputText="£"
-
-          /> */}
-
+        <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full flex-1 bg-white border-inherit">
+          <div className="flex flex-col items-start gap-4 w-full md:flex-row">
+            <h1 className="text-slate-900 text-left font-[700] text-xl">
+              Mortgage Calculator
+            </h1>
+            <button
+              className="underline text-slate-700 md:ml-auto"
+              type="reset"
+            >
+              Clear all
+            </button>
+          </div>
           <TextInput
             name="amount"
             label="Mortgage amount"
-            innerInputText="&"
+            innerInputText="£"
             size={3}
             position="left"
           ></TextInput>
@@ -126,9 +120,9 @@ const [amount, setAmount] = useState<number | null>(0);
             size={3}
             position="right"
           ></TextInput>
-          <div id="my-radio-group" className="text-slate-700">
+          <fieldset id="my-radio-group" className="text-slate-700">
             Mortgage Type
-          </div>
+          </fieldset>
           <div
             role="group"
             aria-labelledby="my-radio-group"
@@ -144,21 +138,23 @@ const [amount, setAmount] = useState<number | null>(0);
           {/* <OptionSelect legend="Mortgage Type" options={options}name="selected"></OptionSelect> */}
           <button
             type="submit"
-            className="bg-lime rounded-full w-full p-6 flex font-bold justify-center items-center text-lg"
+            className="bg-lime rounded-full w-full p-6 flex font-bold justify-center items-center text-lg hover:bg-lime/50"
           >
             <img src="./images/icon-calculator.svg" className="px-4" alt="" />
             Calculate Repayments
           </button>
         </Form>
       </Formik>
-      {interestRepayment ? (
-        <ResultsCompleted
-          monthlyRepayment={monthlyRepayment}
-          totalRepayment={totalRepayment}
-        />
-      ) : (
-        <ResultsEmpty />
-      )}
+      <div className="flex-1">
+        {interestRepayment ? (
+          <ResultsCompleted
+            monthlyRepayment={monthlyRepayment}
+            totalRepayment={totalRepayment}
+          />
+        ) : (
+          <ResultsEmpty />
+        )}
+      </div>
     </main>
   );
 }

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function ResultsEmpty() {
   return (
-    <div className="flex flex-col  bg-slate-900 items-center justify-center p-9 gap-6">
+    <div className="flex flex-col w-full bg-slate-900 items-center justify-center p-9 gap-6 md:rounded-bl-[70px] h-full">
       <Image
         src="images/illustration-empty.svg"
         alt="calculator illustration"
