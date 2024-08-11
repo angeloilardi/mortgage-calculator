@@ -4,42 +4,49 @@ import * as yup from "yup";
 
 import { Form, Formik, Field, FormikProps, ErrorMessage } from "formik";
 
+import { NumericFormat } from "react-number-format";
+
 import Image from "next/image";
-import TextInput from "./components/TextInput";
-// import OptionSelect from "./components/OptionSelect";
-import { useState } from "react";
+import TextInput from "./components/FormInput";
+import { useEffect, useState } from "react";
 import ResultsEmpty from "./components/ResultsEmpty";
 import ResultsCompleted from "./components/ResultsCompleted";
 import OptionSelect from "./components/OptionSelect";
+import { constants } from "buffer";
+import FormInput from "./components/FormInput";
 
 export default function Home() {
-  interface FormValues  {
-    amount: number | '';
-    years: number | '';
-    rate: number | '';
+  interface FormValues {
+    amount: string | ""
+    years: string | "";
+    rate: string | "";
     selected: string;
-  };
+  }
 
-  const [monthlyRepayment, setMonthlyRepayment] = useState<null | number>(null);
+  const [monthlyRepayment, setMonthlyRepayment] = useState<"" | number>("");
 
-  const [interestRepayment, setInterestRepayment] = useState<null | number>(
-    null
-  );
+  const [interestRepayment, setInterestRepayment] = useState<number | null>(null);
 
-  const [totalRepayment, setTotalRepayment] = useState<null | number>(null);
+  const [totalRepayment, setTotalRepayment] = useState<"" | number>("");
+
+const [amount, setAmount] = useState<number | null>(0);
+
+  useEffect(() => {
+    interestRepayment && amount &&
+    setTotalRepayment(interestRepayment + amount);
+  }, [amount, interestRepayment]);
 
   let schema = yup.object().shape({
-    amount: yup.number().required("This field is required"),
+    amount: yup.string().required("This field is required"),
     years: yup.number().required("This field is required").positive(),
     rate: yup.number().required("This field is required").positive(),
-    selected: yup.string().required("This field is required")
+    selected: yup.string().required("This field is required"),
   });
 
-
   const initialValues: FormValues = {
-    amount: '',
-    years: '',
-    rate: '',
+    amount: "",
+    years: "",
+    rate: "",
     selected: "",
   };
 
@@ -47,25 +54,41 @@ export default function Home() {
     <main className="h-screen w-full">
       <Formik
         initialValues={initialValues}
-        validationSchema={schema}
+        // validationSchema={schema}
         onSubmit={(values) => {
-          //  const { Number(amount, rate, years}} = values;
-          const amount = Number(values.amount);
+          console.log(values);
+          const amount = Number(values.amount.replace(/[^0-9\.-]+/g, ""));
           const years = Number(values.years);
           const rate = Number(values.rate);
           const n = years * 12;
           const i = rate / 100 / 12;
+          setAmount(amount);
+          console.log(amount, years, rate);
           setMonthlyRepayment(
             +(
               (amount * i * Math.pow(1 + i, n)) /
               (Math.pow(1 + i, n) - 1)
             ).toFixed(2)
           );
-          setInterestRepayment(amount * (rate / 100) * years);
+          // function calculateTotalRepayment() {
           // setTotalRepayment(interestRepayment + amount);
+          // };
+          function calculatInterestRepayment(
+            amount: number,
+            rate: number,
+            years: number
+            // callback: { (): void; (): void }
+          ) {
+            setInterestRepayment(+(amount * (rate / 100) * years));
+            // callback();
+          }
+          calculatInterestRepayment(
+            amount,
+            rate,
+            years
+            // calculateTotalRepayment
+          );
         }}
-      
-
       >
         <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full bg-white">
           <h1 className="text-slate-900 text-left font-[700] text-xl">
@@ -74,16 +97,22 @@ export default function Home() {
           <button className="underline text-slate-700" type="reset">
             Clear all
           </button>
-          <TextInput
-            type="number"
+          {/* <CurrencyInput
+  
             name="amount"
             label="Mortgage Amount"
             innerInputText="£"
+
+          /> */}
+
+          <TextInput
+            name="amount"
+            label="Mortgage amount"
+            innerInputText="&"
             size={3}
             position="left"
           ></TextInput>
           <TextInput
-            type="number"
             name="years"
             label="Mortgage term"
             innerInputText="Years"
@@ -91,7 +120,6 @@ export default function Home() {
             position="right"
           ></TextInput>
           <TextInput
-            type="number"
             name="rate"
             label="Interest Rate"
             innerInputText="%"
@@ -120,7 +148,14 @@ export default function Home() {
           </button>
         </Form>
       </Formik>
-      <ResultsCompleted monthlyRepayment={monthlyRepayment} totalRepayment={totalRepayment}/>
+      {interestRepayment ? (
+        <ResultsCompleted
+          monthlyRepayment={monthlyRepayment}
+          totalRepayment={totalRepayment}
+        />
+      ) : (
+        <ResultsEmpty />
+      )}
     </main>
   );
 }

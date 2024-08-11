@@ -1,17 +1,25 @@
-import { ChangeEvent } from "react";
+
 
 import { useField } from "formik";
+import { NumericFormat } from "react-number-format";
+
+
 
 type InputProps = {
-  type: "text" | "number" | "email" | "password";
   label: string;
   name: string;
   innerInputText: string;
-  size: number
-  position: "left" | "right"
+  size: number;
+  position: "left" | "right";
 };
 
-export default function TextInput({ label, innerInputText, size, position, ...props }: InputProps) {
+export default function FormInput({
+  label,
+  innerInputText,
+  size,
+  position,
+  ...props
+}: InputProps) {
   const [field, meta] = useField(props);
   return (
     <div className="flex flex-col w-full gap-3">
@@ -24,9 +32,12 @@ export default function TextInput({ label, innerInputText, size, position, ...pr
           value={innerInputText}
           readOnly
           size={size}
+          disabled
         />
-        <input
+        <NumericFormat
           className={`border-slate-500 outline-0  w-full ${position === "left" ? `rounded-r-md border-l-0` : `rounded-l-md border-r-0`} text-slate-900 font-bold`}
+          thousandSeparator
+          valueIsNumericString
           {...field}
           {...props}
         />
