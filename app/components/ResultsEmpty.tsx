@@ -9,7 +9,7 @@ export default function ResultsEmpty() {
         width={300}
         height={300}
       ></Image>
-      <h2 className="text-white">Results shown here</h2>
+      <h2 className="text-white text-xl font-bold">Results shown here</h2>
       <p className="text-slate-300">
         Complete the form and click “calculate repayments” to see what your
         monthly repayments would be.
