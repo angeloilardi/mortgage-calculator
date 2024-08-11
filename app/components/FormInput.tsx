@@ -29,14 +29,14 @@ export default function FormInput({
       <div className="h-[50px] flex items-center w-full">
         {/* fixed input */}
         <input
-          className={`pointer-events-none  ${position === "left" ? `border-r-0 rounded-l-md` : "border-l-0 rounded-r-md order-2"} text-center font-bold ${meta.error ? `bg-red text-white border-red` : `bg-slate-100 text-slate-700 border-slate-500`}`}
+          className={`pointer-events-none opacity-100  ${position === "left" ? `border-r-0 rounded-l-md` : "border-l-0 rounded-r-md order-2"} text-center font-bold ${meta.touched && meta.error ? `bg-red text-white border-red` : `bg-slate-100 text-slate-700 border-slate-500`}`}
           value={innerInputText}
           readOnly
           size={size}
           disabled
         />
         <NumericFormat
-          className={`outline-0  w-full ${position === "left" ? `rounded-r-md border-l-0` : `rounded-l-md border-r-0`} text-slate-900 font-bold ${meta.error ? `border-red text-white` : `border-slate-500`}`}
+          className={`outline-0  w-full ${position === "left" ? `rounded-r-md border-l-0` : `rounded-l-md border-r-0`} text-slate-900 font-bold ${meta.touched && meta.error ? `border-red text-white` : `border-slate-500`}`}
           thousandSeparator
           valueIsNumericString
           {...field}
