@@ -8,7 +8,7 @@ import { NumericFormat } from "react-number-format";
 
 import Image from "next/image";
 import TextInput from "./components/FormInput";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ResultsEmpty from "./components/ResultsEmpty";
 import ResultsCompleted from "./components/ResultsCompleted";
 import OptionSelect from "./components/OptionSelect";
@@ -29,7 +29,9 @@ export default function Home() {
 
   const [totalRepayment, setTotalRepayment] = useState<"" | number>("");
 
-const [amount, setAmount] = useState<number | null>(0);
+  const [amount, setAmount] = useState<number | null>(0);
+  
+  const results = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     interestRepayment && amount &&
@@ -51,7 +53,7 @@ const [amount, setAmount] = useState<number | null>(0);
   };
 
   return (
-    <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white overflow-hidden">
+    <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white md:overflow-hidden md:mx-4">
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
@@ -85,6 +87,8 @@ const [amount, setAmount] = useState<number | null>(0);
             years
             // calculateTotalRepayment
           );
+
+           results.current && results.current.scrollIntoView(true)
         }}
       >
         <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full flex-1 bg-white border-inherit">
@@ -106,20 +110,22 @@ const [amount, setAmount] = useState<number | null>(0);
             size={3}
             position="left"
           ></TextInput>
-          <TextInput
-            name="years"
-            label="Mortgage term"
-            innerInputText="Years"
-            size={6}
-            position="right"
-          ></TextInput>
-          <TextInput
-            name="rate"
-            label="Interest Rate"
-            innerInputText="%"
-            size={3}
-            position="right"
-          ></TextInput>
+          <div className="flex md:gap-5 flex-col w-full md:w-auto md:flex-row">
+            <TextInput
+              name="years"
+              label="Mortgage term"
+              innerInputText="Years"
+              size={6}
+              position="right"
+            ></TextInput>
+            <TextInput
+              name="rate"
+              label="Interest Rate"
+              innerInputText="%"
+              size={3}
+              position="right"
+            ></TextInput>
+          </div>
           <fieldset id="my-radio-group" className="text-slate-700">
             Mortgage Type
           </fieldset>
@@ -145,7 +151,7 @@ const [amount, setAmount] = useState<number | null>(0);
           </button>
         </Form>
       </Formik>
-      <div className="flex-1">
+      <div className="flex-1" ref={results}>
         {interestRepayment ? (
           <ResultsCompleted
             monthlyRepayment={monthlyRepayment}
