@@ -17,7 +17,7 @@ import FormInput from "./components/FormInput";
 
 export default function Home() {
   interface FormValues {
-    amount: string | ""
+    amount: string | "";
     years: string | "";
     rate: string | "";
     selected: string;
@@ -25,17 +25,20 @@ export default function Home() {
 
   const [monthlyRepayment, setMonthlyRepayment] = useState<"" | number>("");
 
-  const [interestRepayment, setInterestRepayment] = useState<number | null>(null);
+  const [interestRepayment, setInterestRepayment] = useState<number | null>(
+    null
+  );
 
   const [totalRepayment, setTotalRepayment] = useState<"" | number>("");
 
   const [amount, setAmount] = useState<number | null>(0);
-  
+
   const results = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    interestRepayment && amount &&
-    setTotalRepayment(interestRepayment + amount);
+    interestRepayment &&
+      amount &&
+      setTotalRepayment(interestRepayment + amount);
   }, [amount, interestRepayment]);
 
   let schema = yup.object().shape({
@@ -88,7 +91,7 @@ export default function Home() {
             // calculateTotalRepayment
           );
 
-           results.current && results.current.scrollIntoView(true)
+          results.current && results.current.scrollIntoView(true);
         }}
       >
         <Form className="px-6 pt-9 pb-8 flex flex-col items-start gap-7 w-full flex-1 bg-white border-inherit">
@@ -99,6 +102,7 @@ export default function Home() {
             <button
               className="underline text-slate-700 md:ml-auto"
               type="reset"
+              onClick={() => setInterestRepayment(null)}
             >
               Clear all
             </button>
