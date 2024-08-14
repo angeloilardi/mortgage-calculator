@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plusJakarta.className} bg-slate-300 flex items-center justify-center h-screen min-h-min`}>{children}</body>
+      <body className={`${plusJakarta.className} bg-slate-100 flex items-center justify-center h-screen`}>{children}</body>
     </html>
   );
 }

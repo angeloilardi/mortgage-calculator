@@ -4,16 +4,12 @@ import * as yup from "yup";
 
 import { Form, Formik, Field, FormikProps, ErrorMessage } from "formik";
 
-import { NumericFormat } from "react-number-format";
-
 import Image from "next/image";
-import TextInput from "./components/FormInput";
+import FormInput from "./components/FormInput";
 import { useEffect, useRef, useState } from "react";
 import ResultsEmpty from "./components/ResultsEmpty";
 import ResultsCompleted from "./components/ResultsCompleted";
 import OptionSelect from "./components/OptionSelect";
-import { constants } from "buffer";
-import FormInput from "./components/FormInput";
 
 export default function Home() {
   interface FormValues {
@@ -23,6 +19,7 @@ export default function Home() {
     selected: string;
   }
 
+  // state variables
   const [monthlyRepayment, setMonthlyRepayment] = useState<"" | number>("");
 
   const [interestRepayment, setInterestRepayment] = useState<number | null>(
@@ -41,6 +38,7 @@ export default function Home() {
       setTotalRepayment(interestRepayment + amount);
   }, [amount, interestRepayment]);
 
+  // validation schema
   let schema = yup.object().shape({
     amount: yup.string().required("This field is required"),
     years: yup.number().required("This field is required").positive(),
@@ -48,6 +46,7 @@ export default function Home() {
     selected: yup.string().required("This field is required"),
   });
 
+  // form initial values
   const initialValues: FormValues = {
     amount: "",
     years: "",
@@ -56,41 +55,37 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white md:overflow-hidden md:mx-4">
+    <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white md:overflow-auto md:mx-4 md:min-h-max">
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
         onSubmit={(values) => {
-          console.log(values);
+          // transform form values into numbers
           const amount = Number(values.amount.replace(/[^0-9\.-]+/g, ""));
           const years = Number(values.years);
           const rate = Number(values.rate);
           const n = years * 12;
           const i = rate / 100 / 12;
           setAmount(amount);
-          console.log(amount, years, rate);
+          // calculate monthly repayment
           setMonthlyRepayment(
             +(
               (amount * i * Math.pow(1 + i, n)) /
               (Math.pow(1 + i, n) - 1)
             ).toFixed(2)
           );
+          //function calculate interest
           function calculatInterestRepayment(
             amount: number,
             rate: number,
             years: number
-            // callback: { (): void; (): void }
           ) {
-            setInterestRepayment(+(amount * (rate / 100) * years));
-            // callback();
+            setInterestRepayment(amount * (rate / 100) * years);
           }
-          calculatInterestRepayment(
-            amount,
-            rate,
-            years
-            // calculateTotalRepayment
-          );
 
+          calculatInterestRepayment(amount, rate, years);
+
+          // scroll down to the results section
           results.current && results.current.scrollIntoView(true);
         }}
       >
@@ -99,6 +94,7 @@ export default function Home() {
             <h1 className="text-slate-900 text-left font-[700] text-xl">
               Mortgage Calculator
             </h1>
+            {/* reset button */}
             <button
               className="underline text-slate-700 md:ml-auto"
               type="reset"
@@ -107,29 +103,31 @@ export default function Home() {
               Clear all
             </button>
           </div>
-          <TextInput
+          {/* 3x Form inputs */}
+          <FormInput
             name="amount"
             label="Mortgage amount"
             innerInputText="£"
             size={3}
             position="left"
-          ></TextInput>
+          ></FormInput>
           <div className="flex md:gap-5 flex-col w-full md:w-auto md:flex-row">
-            <TextInput
+            <FormInput
               name="years"
               label="Mortgage term"
               innerInputText="Years"
               size={6}
               position="right"
-            ></TextInput>
-            <TextInput
+            ></FormInput>
+            <FormInput
               name="rate"
               label="Interest Rate"
               innerInputText="%"
               size={3}
               position="right"
-            ></TextInput>
+            ></FormInput>
           </div>
+          {/* Mortgage type radio buttons */}
           <fieldset id="my-radio-group" className="text-slate-700">
             Mortgage Type
           </fieldset>
@@ -145,16 +143,25 @@ export default function Home() {
               render={(msg) => <div className="text-red text-sm">{msg}</div>}
             ></ErrorMessage>
           </div>
-          {/* <OptionSelect legend="Mortgage Type" options={options}name="selected"></OptionSelect> */}
+
+          {/* submit button */}
           <button
             type="submit"
             className="bg-lime rounded-full w-full p-6 flex font-bold justify-center items-center text-lg hover:bg-lime/50"
           >
-            <img src="./images/icon-calculator.svg" className="px-4" alt="" />
+            <Image
+              src="./images/icon-calculator.svg"
+              className="px-4"
+              alt=""
+              width={24}
+              height={24}
+            />
             Calculate Repayments
           </button>
         </Form>
       </Formik>
+
+      {/* results section */}
       <div className="flex-1" ref={results}>
         {interestRepayment ? (
           <ResultsCompleted
