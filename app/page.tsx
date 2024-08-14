@@ -30,13 +30,16 @@ export default function Home() {
 
   const [amount, setAmount] = useState<number | null>(0);
 
+  const [isInterestOnly, setisInterestOnly] =  useState(false);
+
   const results = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     interestRepayment &&
       amount &&
+      isInterestOnly &&
       setTotalRepayment(interestRepayment + amount);
-  }, [amount, interestRepayment]);
+  }, [amount, interestRepayment, isInterestOnly]);
 
   // validation schema
   let schema = yup.object().shape({
@@ -67,23 +70,22 @@ export default function Home() {
           const n = years * 12;
           const i = rate / 100 / 12;
           setAmount(amount);
-          // calculate monthly repayment
-          setMonthlyRepayment(
-            +(
-              (amount * i * Math.pow(1 + i, n)) /
-              (Math.pow(1 + i, n) - 1)
-            ).toFixed(2)
-          );
-          //function calculate interest
-          function calculatInterestRepayment(
-            amount: number,
-            rate: number,
-            years: number
-          ) {
-            setInterestRepayment(amount * (rate / 100) * years);
+          setInterestRepayment(amount * (rate / 100) * years);
+          console.log(values.selected);
+          if (values.selected === "Repayment") {
+            setMonthlyRepayment(
+              +(
+                (amount * i * Math.pow(1 + i, n)) /
+                (Math.pow(1 + i, n) - 1)
+              ).toFixed(2)
+            );
+            setisInterestOnly(false);
+          } else {
+            setMonthlyRepayment(+((amount * (rate / 100)) / 12).toFixed(2));
+            setisInterestOnly(true);
+            console.log(isInterestOnly);
           }
-
-          calculatInterestRepayment(amount, rate, years);
+          // calculate monthly repayment
 
           // scroll down to the results section
           results.current && results.current.scrollIntoView(true);
@@ -166,7 +168,7 @@ export default function Home() {
         {interestRepayment ? (
           <ResultsCompleted
             monthlyRepayment={monthlyRepayment}
-            totalRepayment={totalRepayment}
+            totalRepayment={isInterestOnly ? interestRepayment : totalRepayment}
           />
         ) : (
           <ResultsEmpty />
