@@ -2,7 +2,7 @@
 
 import * as yup from "yup";
 
-import { Form, Formik, Field, FormikProps, ErrorMessage } from "formik";
+import { Form, Formik, ErrorMessage } from "formik";
 
 import Image from "next/image";
 import FormInput from "./components/FormInput";
@@ -19,6 +19,14 @@ export default function Home() {
     selected: string;
   }
 
+    // form initial values
+  const initialValues: FormValues = {
+    amount: "",
+    years: "",
+    rate: "",
+    selected: "",
+  };
+
   // state variables
   const [monthlyRepayment, setMonthlyRepayment] = useState<"" | number>("");
 
@@ -28,18 +36,18 @@ export default function Home() {
 
   const [totalRepayment, setTotalRepayment] = useState<"" | number>("");
 
-  const [amount, setAmount] = useState<number | null>(0);
-
-  const [isInterestOnly, setisInterestOnly] =  useState(false);
+  const [isInterestOnly, setisInterestOnly] = useState(false);
 
   const results = useRef<HTMLDivElement>(null);
 
+  const [formValues, setFormValues] = useState( initialValues )
+
   useEffect(() => {
-    interestRepayment &&
-      amount &&
-      isInterestOnly &&
-      setTotalRepayment(interestRepayment + amount);
-  }, [amount, interestRepayment, isInterestOnly]);
+    if (!isInterestOnly) {
+      setTotalRepayment(+monthlyRepayment * +formValues.years * 12);
+    }
+  }, [monthlyRepayment, formValues.years, isInterestOnly]);
+  
 
   // validation schema
   let schema = yup.object().shape({
@@ -49,13 +57,7 @@ export default function Home() {
     selected: yup.string().required("This field is required"),
   });
 
-  // form initial values
-  const initialValues: FormValues = {
-    amount: "",
-    years: "",
-    rate: "",
-    selected: "",
-  };
+
 
   return (
     <main className="h-screen flex flex-col md:flex-row md:max-w-5xl md:h-max md:rounded-xl bg-white md:border-white md:overflow-auto md:mx-4 md:min-h-max">
@@ -69,9 +71,9 @@ export default function Home() {
           const rate = Number(values.rate);
           const n = years * 12;
           const i = rate / 100 / 12;
-          setAmount(amount);
+          setFormValues(values);
           setInterestRepayment(amount * (rate / 100) * years);
-          console.log(values.selected);
+          // calculate monthly repayment based on the mortgage type
           if (values.selected === "Repayment") {
             setMonthlyRepayment(
               +(
@@ -81,11 +83,9 @@ export default function Home() {
             );
             setisInterestOnly(false);
           } else {
-            setMonthlyRepayment(+((amount * (rate / 100)) / 12).toFixed(2));
+            setMonthlyRepayment(+(amount * i).toFixed(2));
             setisInterestOnly(true);
-            console.log(isInterestOnly);
           }
-          // calculate monthly repayment
 
           // scroll down to the results section
           results.current && results.current.scrollIntoView(true);
