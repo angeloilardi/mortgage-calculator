@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import ResultsEmpty from "./components/ResultsEmpty";
 import ResultsCompleted from "./components/ResultsCompleted";
 import OptionSelect from "./components/OptionSelect";
+import { CalculatorIcon } from "./components/CalculatorIcon";
 
 export default function Home() {
   interface FormValues {
@@ -149,15 +150,9 @@ export default function Home() {
           {/* submit button */}
           <button
             type="submit"
-            className="bg-lime rounded-full w-full p-6 flex font-bold justify-center items-center text-lg hover:bg-lime/50"
+            className="bg-lime rounded-full w-full py-5 px-9 flex font-bold justify-center items-center text-lg hover:bg-lime/50 gap-4 md:w-max"
           >
-            <Image
-              src="./images/icon-calculator.svg"
-              className="px-4"
-              alt=""
-              width={24}
-              height={24}
-            />
+            <CalculatorIcon/>
             Calculate Repayments
           </button>
         </Form>
