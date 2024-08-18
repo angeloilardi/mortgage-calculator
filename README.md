@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend Mentor - Mortgage repayment calculator solution
 
-## Getting Started
+This is a solution to the [Mortgage repayment calculator challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/mortgage-repayment-calculator-Galx1LXK73). Frontend Mentor challenges help you improve your coding skills by building realistic projects. 
 
-First, run the development server:
+## Table of contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+- [Author](#author)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Note: Delete this note and update the table of contents based on what sections you keep.**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### The challenge
 
-## Learn More
+Users should be able to:
 
-To learn more about Next.js, take a look at the following resources:
+- Input mortgage information and see monthly repayment and total repayment amounts after submitting the form
+- See form validation messages if any field is incomplete
+- Complete the form only using their keyboard
+- View the optimal layout for the interface depending on their device's screen size
+- See hover and focus states for all interactive elements on the page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Screenshot
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Screenshot with results](./public/images/screenshot%20completed.png)
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Links
+
+- Live Site URL: [https://mortgage-calculator-tau-eight.vercel.app/](https://mortgage-calculator-tau-eight.vercel.app/)
+
+## My process
+
+### Built with
+
+- Semantic HTML5 markup
+- Tailwind CSS
+- Flexbox
+- CSS Grid
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript] (https://www.typescriptlang.org/)
+- [Formik](https://formik.org/) - For the form creation
+- [Yup] (https://github.com/jquense/yup) - For the form validation
+- [React Number format] (https://s-yadav.github.io/react-number-format/) - For the currency formatting
+- 
+
+
+### What I learned
+
+I learned how to handle the asynchronous update of state in React, how to work with forms and customise the deafault style for inputs, error messages, etc.
+
+I also learned how to use TypeScript interfaces for the maximum type safety.
+
+
+
+### Continued development
+
+Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
+
+**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+
+
+## Author
+
+- Website - [https://angelo-ilardi.vercel.app/](https://angelo-ilardi.vercel.app/)
+- Frontend Mentor - [@helldorado82](https://www.frontendmentor.io/profile/angeloilardi)
