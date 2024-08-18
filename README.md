@@ -62,14 +62,6 @@ I learned how to handle the asynchronous update of state in React, how to work w
 I also learned how to use TypeScript interfaces for the maximum type safety.
 
 
-
-### Continued development
-
-Use this section to outline areas that you want to continue focusing on in future projects. These could be concepts you're still not completely comfortable with or techniques you found useful that you want to refine and perfect.
-
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
-
-
 ## Author
 
 - Website - [https://angelo-ilardi.vercel.app/](https://angelo-ilardi.vercel.app/)
